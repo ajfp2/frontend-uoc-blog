@@ -7,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 import { HeaderMenus } from 'src/app/Models/header-menus.dto';
 import { UserDTO } from 'src/app/Models/user.dto';
 import { HeaderMenusService } from 'src/app/Services/header-menus.service';
@@ -107,7 +108,25 @@ export class RegisterComponent implements OnInit {
     this.registerUser = this.registerForm.value;
 
     
-    this.userService.register(this.registerUser).subscribe(resp => {
+    this.userService.register(this.registerUser)
+    .pipe(finalize(
+      async () => {
+        await this.sharedService.managementToast(
+          'registerFeedback',
+          responseOK,
+          errorResponse
+        );
+    
+        if (responseOK) {
+          // Reset the form
+          this.registerForm.reset();
+          // After reset form we set birthDate to today again (is an example)
+          this.birth_date.setValue(formatDate(new Date(), 'yyyy-MM-dd', 'en'));
+          this.router.navigateByUrl('home');
+        }
+      }
+    ))
+    .subscribe(() => {
       responseOK = true;
     },
     err => {
@@ -119,21 +138,6 @@ export class RegisterComponent implements OnInit {
       };
       this.headerMenusService.headerManagement.next(headerInfo);
       this.sharedService.errorLog(errorResponse);
-    },
-    async () => {
-      await this.sharedService.managementToast(
-        'registerFeedback',
-        responseOK,
-        errorResponse
-      );
-  
-      if (responseOK) {
-        // Reset the form
-        this.registerForm.reset();
-        // After reset form we set birthDate to today again (is an example)
-        this.birth_date.setValue(formatDate(new Date(), 'yyyy-MM-dd', 'en'));
-        this.router.navigateByUrl('home');
-      }
     });
   }
 }

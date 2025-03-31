@@ -1,4 +1,5 @@
 import { formatDate } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -6,6 +7,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
 import { UserDTO } from 'src/app/Models/user.dto';
 import { LocalStorageService } from 'src/app/Services/local-storage.service';
 import { SharedService } from 'src/app/Services/shared.service';
@@ -95,7 +97,8 @@ export class ProfileComponent implements OnInit {
     // load user data
     const userId = this.localStorageService.get('user_id');
     if (userId) {
-      this.userService.getUSerById(userId).subscribe(resp => {
+      this.userService.getUSerById(userId)
+      .subscribe((resp: UserDTO) => {
         const userData = resp;
         this.name.setValue(userData.name);
         this.surname_1.setValue(userData.surname_1);
@@ -116,7 +119,7 @@ export class ProfileComponent implements OnInit {
           password: this.password,
         });
       },
-      err => {
+      (err: HttpErrorResponse) => {
         errorResponse = err.error;
         this.sharedService.errorLog(errorResponse);
       });
@@ -139,21 +142,23 @@ export class ProfileComponent implements OnInit {
     const userId = this.localStorageService.get('user_id');
 
     if (userId) {
-      this.userService.updateUser(userId, this.profileUser).subscribe(resp => {
+      this.userService.updateUser(userId, this.profileUser)
+      .pipe(
+        finalize(async() => {
+          await this.sharedService.managementToast(
+            'profileFeedback',
+            responseOK,
+            errorResponse
+          );
+        })
+      )
+      .subscribe(() => {
         responseOK = true;
       },
       err => {
         responseOK = false;
         errorResponse = err.error;
-
         this.sharedService.errorLog(errorResponse);
-      },
-      async () => {
-        await this.sharedService.managementToast(
-          'profileFeedback',
-          responseOK,
-          errorResponse
-        );
       });
     }
   }

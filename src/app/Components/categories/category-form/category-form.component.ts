@@ -101,8 +101,7 @@ export class CategoryFormComponent implements OnInit {
         this.category.userId = userId;
         this.categoryService.updateCategory( this.categoryId, this.category)
         .pipe(
-          finalize(async () => {
-            console.log("COMPLETE");            
+          finalize(async () => {            
             await this.sharedService.managementToast(
               'categoryFeedback',
               responseOK,
@@ -117,7 +116,7 @@ export class CategoryFormComponent implements OnInit {
           })
         ).subscribe(() => responseOK = true, 
           (error: HttpErrorResponse) => {
-            this.validRequest = true;
+            this.validRequest = false;
             responseOK = false;
             errorResponse = error.error;
             this.sharedService.errorLog(errorResponse);

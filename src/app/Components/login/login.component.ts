@@ -83,8 +83,7 @@ export class LoginComponent implements OnInit {
 
         // save token to localstorage for next requests
         this.localStorageService.set('user_id', this.loginUser.user_id);
-        this.localStorageService.set('access_token', this.loginUser.access_token);
-        
+        this.localStorageService.set('access_token', this.loginUser.access_token);                
     },
     (error: HttpErrorResponse) => {
         responseOK = false;

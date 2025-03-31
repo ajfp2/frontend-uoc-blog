@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { PostDTO } from 'src/app/Models/post.dto';
@@ -25,13 +26,13 @@ export class PostsListComponent {
     let errorResponse: any;
     const userId = this.localStorageService.get('user_id');
     if (userId) {      
-      this.postService.getPostsByUserId(userId).subscribe(resp => {
+      this.postService.getPostsByUserId(userId).subscribe((resp: PostDTO[]) => {
         this.posts = resp;
-      }, error => {
+      },
+      (error: HttpErrorResponse) => {
         errorResponse = error.error;
         this.sharedService.errorLog(errorResponse);
-      });
-      
+      });      
     }
   }
 
@@ -53,7 +54,8 @@ export class PostsListComponent {
         if (rowsAffected.affected > 0) {
           this.loadPosts();
         }
-      }, err => {
+      },
+      (err: HttpErrorResponse) => {
         errorResponse = err.error;
         this.sharedService.errorLog(errorResponse);
       });

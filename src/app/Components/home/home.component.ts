@@ -65,7 +65,7 @@ export class HomeComponent {
 
   dislike(postId: string): void {
     let errorResponse: any;
-      this.postService.dislikePost(postId).subscribe( () => this.loadPosts(),
+      this.postService.dislikePost(postId).subscribe(() => this.loadPosts(),
         (err: HttpErrorResponse) => {
           errorResponse = err.error;
           this.sharedService.errorLog(errorResponse);
