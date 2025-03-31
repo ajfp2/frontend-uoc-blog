@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { HeaderMenus } from 'src/app/Models/header-menus.dto';
@@ -36,39 +37,39 @@ export class HomeComponent {
       }
     );
   }
-  private async loadPosts(): Promise<void> {
+
+  loadPosts(): void {
     let errorResponse: any;
     const userId = this.localStorageService.get('user_id');
     if (userId) {
       this.showButtons = true;
     }
-    try {
-      this.posts = await this.postService.getPosts();
-    } catch (error: any) {
-      errorResponse = error.error;
+    this.postService.getPosts().subscribe( (resp: PostDTO[]) => {
+      this.posts = resp;
+    },
+    (err: HttpErrorResponse) => {
+      errorResponse = err.error;
       this.sharedService.errorLog(errorResponse);
-    }
+    });    
   }
 
-  async like(postId: string): Promise<void> {
+  like(postId: string): void {
     let errorResponse: any;
-    try {
-      await this.postService.likePost(postId);
-      this.loadPosts();
-    } catch (error: any) {
-      errorResponse = error.error;
-      this.sharedService.errorLog(errorResponse);
-    }
+    this.postService.likePost(postId).subscribe(() => this.loadPosts(),
+      (err: HttpErrorResponse) => {
+        errorResponse = err.error;
+        this.sharedService.errorLog(errorResponse);
+      });
+      
   }
 
-  async dislike(postId: string): Promise<void> {
+  dislike(postId: string): void {
     let errorResponse: any;
-    try {
-      await this.postService.dislikePost(postId);
-      this.loadPosts();
-    } catch (error: any) {
-      errorResponse = error.error;
-      this.sharedService.errorLog(errorResponse);
-    }
+      this.postService.dislikePost(postId).subscribe( () => this.loadPosts(),
+        (err: HttpErrorResponse) => {
+          errorResponse = err.error;
+          this.sharedService.errorLog(errorResponse);
+        }
+      );      
   }
 }

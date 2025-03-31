@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -6,6 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 import { AuthDTO } from 'src/app/Models/auth.dto';
 import { HeaderMenus } from 'src/app/Models/header-menus.dto';
 import { AuthService } from 'src/app/Services/auth.service';
@@ -58,31 +60,8 @@ export class LoginComponent implements OnInit {
     this.loginUser.email = this.email.value;
     this.loginUser.password = this.password.value;
 
-    this.authService.login(this.loginUser).subscribe((resp: any) => {
-        responseOK = true;
-        console.log("Suscribe", resp);            
-        this.loginUser = resp;
-        // save token to localstorage for next requests
-        this.localStorageService.set('user_id', this.loginUser.user_id);
-        this.localStorageService.set('access_token', this.loginUser.access_token);
-        
-    }, (error) => {
-        responseOK = false;
-        console.error("ERROR LOGIN", error);            
-        errorResponse = error.error;
-        const headerInfo: HeaderMenus = {
-            showAuthSection: false,
-            showNoAuthSection: true,
-        };
-        this.headerMenusService.headerManagement.next(headerInfo);
-        this.sharedService.errorLog(error.error);
-        this.sharedService.managementToast(
-            'loginFeedback',
-            responseOK,
-            errorResponse
-        );
-    }, async () => {
-        console.log("LOG COMPLETE")
+    this.authService.login(this.loginUser).pipe(
+      finalize(async() => {
         await this.sharedService.managementToast(
             'loginFeedback',
             responseOK,
@@ -97,6 +76,26 @@ export class LoginComponent implements OnInit {
             this.headerMenusService.headerManagement.next(headerInfo);
             this.router.navigateByUrl('home');
         }
+      })
+    ).subscribe((resp: any) => {
+        responseOK = true;           
+        this.loginUser = resp;
+
+        // save token to localstorage for next requests
+        this.localStorageService.set('user_id', this.loginUser.user_id);
+        this.localStorageService.set('access_token', this.loginUser.access_token);
+        
+    },
+    (error: HttpErrorResponse) => {
+        responseOK = false;
+        console.error("ERROR LOGIN", error);            
+        errorResponse = error.error;
+        const headerInfo: HeaderMenus = {
+            showAuthSection: false,
+            showNoAuthSection: true,
+        };
+        this.headerMenusService.headerManagement.next(headerInfo);
+        this.sharedService.errorLog(error.error);        
     });
     console.log('just after subscribe LOGIN');
   }

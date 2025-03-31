@@ -94,7 +94,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  async register(): Promise<void> {
+  register(): void {
     let responseOK: boolean = false;
     this.isValidForm = false;
     let errorResponse: any;
@@ -106,34 +106,34 @@ export class RegisterComponent implements OnInit {
     this.isValidForm = true;
     this.registerUser = this.registerForm.value;
 
-    try {
-      await this.userService.register(this.registerUser);
+    
+    this.userService.register(this.registerUser).subscribe(resp => {
       responseOK = true;
-    } catch (error: any) {
+    },
+    err => {
       responseOK = false;
-      errorResponse = error.error;
-
+      errorResponse = err.error;
       const headerInfo: HeaderMenus = {
         showAuthSection: false,
         showNoAuthSection: true,
       };
       this.headerMenusService.headerManagement.next(headerInfo);
-
       this.sharedService.errorLog(errorResponse);
-    }
-
-    await this.sharedService.managementToast(
-      'registerFeedback',
-      responseOK,
-      errorResponse
-    );
-
-    if (responseOK) {
-      // Reset the form
-      this.registerForm.reset();
-      // After reset form we set birthDate to today again (is an example)
-      this.birth_date.setValue(formatDate(new Date(), 'yyyy-MM-dd', 'en'));
-      this.router.navigateByUrl('home');
-    }
+    },
+    async () => {
+      await this.sharedService.managementToast(
+        'registerFeedback',
+        responseOK,
+        errorResponse
+      );
+  
+      if (responseOK) {
+        // Reset the form
+        this.registerForm.reset();
+        // After reset form we set birthDate to today again (is an example)
+        this.birth_date.setValue(formatDate(new Date(), 'yyyy-MM-dd', 'en'));
+        this.router.navigateByUrl('home');
+      }
+    });
   }
 }

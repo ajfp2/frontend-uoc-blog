@@ -1,5 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { CategoryDTO } from 'src/app/Models/category.dto';
 import { CategoryService } from 'src/app/Services/category.service';
 import { LocalStorageService } from 'src/app/Services/local-storage.service';
@@ -22,18 +24,19 @@ export class CategoriesListComponent {
     this.loadCategories();
   }
 
-  private async loadCategories(): Promise<void> {
+  private  loadCategories(): void {
     let errorResponse: any;
     const userId = this.localStorageService.get('user_id');
     if (userId) {
-      try {
-        this.categories = await this.categoryService.getCategoriesByUserId(
-          userId
-        );
-      } catch (error: any) {
-        errorResponse = error.error;
-        this.sharedService.errorLog(errorResponse);
-      }
+
+      this.categoryService.getCategoriesByUserId(userId)
+      .subscribe(
+        (resp: CategoryDTO[]) => {this.categories = resp;}, 
+        (err: HttpErrorResponse) => {
+          errorResponse = err.error;
+          this.sharedService.errorLog(errorResponse);
+      });
+     
     }
   }
 
@@ -45,25 +48,21 @@ export class CategoriesListComponent {
     this.router.navigateByUrl('/user/category/' + categoryId);
   }
 
-  async deleteCategory(categoryId: string): Promise<void> {
+  deleteCategory(categoryId: string):void {
     let errorResponse: any;
 
     // show confirmation popup
-    let result = confirm(
-      'Confirm delete category with id: ' + categoryId + ' .'
-    );
+    let result = confirm('Confirm delete category with id: ' + categoryId + ' .');
     if (result) {
-      try {
-        const rowsAffected = await this.categoryService.deleteCategory(
-          categoryId
-        );
+      this.categoryService.deleteCategory(categoryId).subscribe( res => {
+        const rowsAffected = res;
         if (rowsAffected.affected > 0) {
           this.loadCategories();
         }
-      } catch (error: any) {
+      }, (error: HttpErrorResponse) => {
         errorResponse = error.error;
         this.sharedService.errorLog(errorResponse);
-      }
+      });
     }
   }
 }
