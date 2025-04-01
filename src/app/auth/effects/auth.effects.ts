@@ -36,16 +36,6 @@ export class AuthEffects {
         console.log("Action", action);
         
         this.router.navigateByUrl('home');
-        // if (responseOK) {
-        //     const headerInfo: HeaderMenus = {
-        //         showAuthSection: true,
-        //         showNoAuthSection: false,
-        //     };
-        //     // update options menu
-        //     this.headerMenusService.headerManagement.next(headerInfo);
-            
-        // }
-
       })
     ),
     { dispatch: false }

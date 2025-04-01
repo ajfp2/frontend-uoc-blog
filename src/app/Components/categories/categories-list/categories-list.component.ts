@@ -1,7 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { AppState } from 'src/app/app.reducer';
+import { AuthDTO } from 'src/app/auth/models/auth.dto';
+import { AuthState } from 'src/app/auth/reducers';
 import { CategoryDTO } from 'src/app/Models/category.dto';
 import { CategoryService } from 'src/app/Services/category.service';
 import { LocalStorageService } from 'src/app/Services/local-storage.service';
@@ -14,22 +18,27 @@ import { SharedService } from 'src/app/Services/shared.service';
 })
 export class CategoriesListComponent {
   categories!: CategoryDTO[];
-
+  userId: string = "";
   constructor(
     private categoryService: CategoryService,
     private router: Router,
-    private localStorageService: LocalStorageService,
+    private store: Store<AppState>,
     private sharedService: SharedService
   ) {
-    this.loadCategories();
+    
+    this.store.select('authApp').subscribe((auth) => {
+      this.userId = auth.credentials.user_id;
+      console.log("AUT", auth);
+      this.loadCategories();
+    });
   }
 
   private  loadCategories(): void {
     let errorResponse: any;
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
-
-      this.categoryService.getCategoriesByUserId(userId)
+    //const auth:AuthDTO = this.store.select('credentials');
+   // const userId = auth.user_id;
+    if (this.userId) {
+      this.categoryService.getCategoriesByUserId(this.userId)
       .subscribe(
         (resp: CategoryDTO[]) => {this.categories = resp;}, 
         (err: HttpErrorResponse) => {
