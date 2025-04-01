@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AuthState } from 'src/app/auth/reducers';
 import { HeaderMenus } from 'src/app/Models/header-menus.dto';
 import { HeaderMenusService } from 'src/app/Services/header-menus.service';
 import { LocalStorageService } from 'src/app/Services/local-storage.service';
@@ -12,17 +15,20 @@ import { LocalStorageService } from 'src/app/Services/local-storage.service';
 export class HeaderComponent implements OnInit {
   showAuthSection: boolean;
   showNoAuthSection: boolean;
-
+  //userId$: Observable<string | null>;
   constructor(
     private router: Router,
+    private store: Store<AuthState>,
     private headerMenusService: HeaderMenusService,
     private localStorageService: LocalStorageService
   ) {
+    //this.userId$ = this.store.select('authApp');
     this.showAuthSection = false;
-    this.showNoAuthSection = true;
+    this.showNoAuthSection = true;    
   }
 
   ngOnInit(): void {
+    
     this.headerMenusService.headerManagement.subscribe(
       (headerInfo: HeaderMenus) => {
         if (headerInfo) {

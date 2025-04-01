@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthDTO } from '../Models/auth.dto';
+import { AuthDTO } from '../models/auth.dto';
 import { Observable } from 'rxjs';
 
 interface AuthToken {
@@ -21,6 +21,12 @@ export class AuthService {
   }
 
   login(auth: AuthDTO): Observable<AuthToken> {
+    console.log("AUTH SERVICE", auth);
+    
     return this.http.post<AuthToken>(this.urlBlogUocApi, auth);
   }
+
+  // login(auth: any): Observable<AuthToken> {
+  //   return this.http.post<AuthToken>(this.urlBlogUocApi, auth);
+  // }
 }

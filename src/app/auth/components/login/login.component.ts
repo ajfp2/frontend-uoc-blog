@@ -7,13 +7,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { finalize } from 'rxjs/operators';
-import { AuthDTO } from 'src/app/Models/auth.dto';
-import { HeaderMenus } from 'src/app/Models/header-menus.dto';
-import { AuthService } from 'src/app/Services/auth.service';
-import { HeaderMenusService } from 'src/app/Services/header-menus.service';
-import { LocalStorageService } from 'src/app/Services/local-storage.service';
-import { SharedService } from 'src/app/Services/shared.service';
+import { Store } from '@ngrx/store';
+
+import { AppState } from 'src/app/app.reducer';
+import { AuthDTO } from 'src/app/auth/models/auth.dto';
+
+import { loginAction } from '../../actions/auth.actions';
 
 @Component({
   selector: 'app-login',
@@ -28,16 +27,11 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: UntypedFormBuilder,
-    private authService: AuthService,
-    private sharedService: SharedService,
-    private headerMenusService: HeaderMenusService,
-    private localStorageService: LocalStorageService,
-    private router: Router
+    private store: Store<AppState>
   ) {
     // this.loginUser = new AuthDTO('', '', '', '');
     this.loginUser = new AuthDTO("", "", "ajfp2@uoc.edu", "ajfp21234");
 
-    // this.email = new UntypedFormControl('', [ Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$') ]);
     this.email = new UntypedFormControl(this.loginUser.email, [ Validators.required, Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$') ]);
 
     this.password = new UntypedFormControl(this.loginUser.password, [
@@ -55,6 +49,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   login(){
+    this.loginUser.email = this.email.value;
+    this.loginUser.password = this.password.value;
+    this.store.dispatch(loginAction({userForm: this.loginUser}));
+  }
+
+  /*
+  loginOLD(){
     let responseOK: boolean = false;
     let errorResponse: any;
     this.loginUser.email = this.email.value;
@@ -97,5 +98,5 @@ export class LoginComponent implements OnInit {
         this.sharedService.errorLog(error.error);        
     });
     console.log('just after subscribe LOGIN');
-  }
+  }*/
 }
