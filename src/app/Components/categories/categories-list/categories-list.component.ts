@@ -28,7 +28,6 @@ export class CategoriesListComponent {
     
     this.store.select('authApp').subscribe((auth) => {
       this.userId = auth.credentials.user_id;
-      console.log("AUT", auth);
       this.loadCategories();
     });
   }

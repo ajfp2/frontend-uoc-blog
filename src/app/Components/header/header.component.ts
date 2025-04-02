@@ -18,32 +18,30 @@ import { LocalStorageService } from 'src/app/Services/local-storage.service';
 export class HeaderComponent implements OnInit {
   showAuthSection: boolean;
   showNoAuthSection: boolean;
-  //userAuth$: Observable<AuthDTO | null>;
-  userAuth: AuthDTO;
-  constructor(
-    private router: Router,
-    private store: Store<AppState>,
-    private headerMenusService: HeaderMenusService,
-    //private localStorageService: LocalStorageService
-  ) {
-    // this.userAuth$ = this.store.select('credentials');
-    this.userAuth = new AuthDTO('', '', '', '');
+  private user_id: string = '';
+
+  constructor( private router: Router, private store: Store<AppState>) {    
     this.showAuthSection = false;
-    this.showNoAuthSection = true;    
+    this.showNoAuthSection = true;
+    console.log("STORE HEADER CONSTR", this.user_id);
+    
   }
 
   ngOnInit(): void {
-    
     this.store.select('authApp').subscribe( respuesta => {
-      this.userAuth = respuesta.credentials;
-      if(this.userAuth.user_id !== ""){
+      this.user_id = respuesta.credentials.user_id;
+      console.log("STORE HEADER INIT", this.user_id);
+      
+      if(this.user_id !== ""){
         this.showAuthSection = true;
         this.showNoAuthSection = false;
       } else {
         this.showAuthSection = false;
         this.showNoAuthSection = true;
-      }
+      }      
     });
+    
+    
   }
 
   dashboard(): void {

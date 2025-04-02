@@ -8,7 +8,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { finalize } from 'rxjs/operators';
+import { AppState } from 'src/app/app.reducer';
 import { CategoryDTO } from 'src/app/Models/category.dto';
 import { PostDTO } from 'src/app/Models/post.dto';
 import { CategoryService } from 'src/app/Services/category.service';
@@ -38,6 +40,7 @@ export class PostFormComponent implements OnInit {
   private postId: string | null;
 
   categoriesList!: CategoryDTO[];
+  userId: string = '';
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -45,7 +48,7 @@ export class PostFormComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private router: Router,
     private sharedService: SharedService,
-    private localStorageService: LocalStorageService,
+    private store: Store<AppState>,
     private categoryService: CategoryService
   ) {
     this.isValidForm = null;
@@ -75,7 +78,11 @@ export class PostFormComponent implements OnInit {
     this.categories = new UntypedFormControl([]);
 
     // get categories by user and load multi select
-    this.loadCategories();
+    this.store.select('authApp').subscribe((auth) => {
+      this.userId = auth.credentials.user_id;
+      this.loadCategories();
+    });
+
 
     this.postForm = this.formBuilder.group({
       title: this.title,
@@ -89,9 +96,9 @@ export class PostFormComponent implements OnInit {
 
   private loadCategories(): void {
     let errorResponse: any;
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
-      this.categoryService.getCategoriesByUserId(userId)
+    
+    if (this.userId !== '') {
+      this.categoryService.getCategoriesByUserId(this.userId)
       .subscribe((respuesta: CategoryDTO[]) => {
         this.categoriesList = respuesta;
       },(error: HttpErrorResponse) => {
@@ -148,9 +155,9 @@ export class PostFormComponent implements OnInit {
     let responseOK: boolean = false;
 
     if (this.postId) {
-      const userId = this.localStorageService.get('user_id');
-      if (userId) {
-        this.post.userId = userId;
+      
+      if (this.userId !== '') {
+        this.post.userId = this.userId;
         this.postService.updatePost(this.postId, this.post)
         .pipe(
           finalize(async () => {
@@ -181,9 +188,8 @@ export class PostFormComponent implements OnInit {
   private createPost(): void {
     let errorResponse: any;
     let responseOK: boolean = false;
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
-      this.post.userId = userId;
+    if (this.userId !== '') {
+      this.post.userId = this.userId;
       
         this.postService.createPost(this.post)
         .pipe(

@@ -1,6 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
 import { HeaderMenus } from 'src/app/Models/header-menus.dto';
 import { PostDTO } from 'src/app/Models/post.dto';
 import { HeaderMenusService } from 'src/app/Services/header-menus.service';
@@ -16,32 +18,37 @@ import { SharedService } from 'src/app/Services/shared.service';
 export class HomeComponent {
   posts!: PostDTO[];
   showButtons: boolean;
+  userId: string = '';
 
   constructor(
     private postService: PostService,
-    private localStorageService: LocalStorageService,
+    private store: Store<AppState>,
     private sharedService: SharedService,
-    private router: Router,
-    private headerMenusService: HeaderMenusService
+    private router: Router
   ) {
     this.showButtons = false;
-    this.loadPosts();
+
+    this.store.select('authApp').subscribe( respuesta => {
+      this.userId = respuesta.credentials.user_id;
+      
+    });
+    
   }
 
   ngOnInit(): void {
-    this.headerMenusService.headerManagement.subscribe(
-      (headerInfo: HeaderMenus) => {
-        if (headerInfo) {
-          this.showButtons = headerInfo.showAuthSection;
-        }
-      }
-    );
+    // this.headerMenusService.headerManagement.subscribe(
+    //   (headerInfo: HeaderMenus) => {
+    //     if (headerInfo) {
+    //       this.showButtons = headerInfo.showAuthSection;
+    //     }
+    //   }
+    // );
+    this.loadPosts();     
   }
 
   loadPosts(): void {
     let errorResponse: any;
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
+    if (this.userId !== '') {
       this.showButtons = true;
     }
     this.postService.getPosts().subscribe( (resp: PostDTO[]) => {

@@ -10,8 +10,9 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { CategoryDTO } from 'src/app/Models/category.dto';
 import { CategoryService } from 'src/app/Services/category.service';
-import { LocalStorageService } from 'src/app/Services/local-storage.service';
 import { SharedService } from 'src/app/Services/shared.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
 
 @Component({
   selector: 'app-category-form',
@@ -31,13 +32,15 @@ export class CategoryFormComponent implements OnInit {
   private validRequest: boolean;
   private categoryId: string | null;
 
+  private userId = '';
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private categoryService: CategoryService,
     private formBuilder: UntypedFormBuilder,
     private router: Router,
     private sharedService: SharedService,
-    private localStorageService: LocalStorageService
+    private store: Store<AppState>
   ) {
     this.isValidForm = null;
     this.categoryId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -64,6 +67,10 @@ export class CategoryFormComponent implements OnInit {
       title: this.title,
       description: this.description,
       css_color: this.css_color,
+    });
+
+    this.store.select('authApp').subscribe( respuesta => {
+      this.userId = respuesta.credentials.user_id;      
     });
   }
 
@@ -96,9 +103,9 @@ export class CategoryFormComponent implements OnInit {
     let responseOK: boolean = false;
 
     if (this.categoryId) {
-      const userId = this.localStorageService.get('user_id');
-      if (userId) {
-        this.category.userId = userId;
+      
+      if (this.userId !== '') {
+        this.category.userId = this.userId;
         this.categoryService.updateCategory( this.categoryId, this.category)
         .pipe(
           finalize(async () => {            
@@ -127,11 +134,10 @@ export class CategoryFormComponent implements OnInit {
 
   private createCategory(): void {
     let errorResponse: any;
-    let responseOK: boolean = false;
-    const userId = this.localStorageService.get('user_id');
+    let responseOK: boolean = false;    
 
-    if (userId) {
-      this.category.userId = userId;
+    if (this.userId !== '') {
+      this.category.userId = this.userId;
       this.categoryService.createCategory(this.category)
       .pipe(
         finalize(async() => {

@@ -1,15 +1,18 @@
 
 import { ActionReducerMap } from '@ngrx/store';
+import { AuthEffects } from './auth/effects';
 
-import * as reducers from './auth/reducers';
-
+import * as authReducer from './auth/reducers';
 
 export interface AppState {
-    authApp: reducers.AuthState;
+    authApp: authReducer.AuthState;
 }
 
 export const appReducers: ActionReducerMap<AppState> = {
-    authApp: reducers.authReducer
+    authApp: authReducer.authReducer
 }
 
-// export const EffectsArray: any[] = [AuthEffects];
+
+export const EffectsArray: any[] = [
+    AuthEffects
+];

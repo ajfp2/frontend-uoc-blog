@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
 import { PostDTO } from 'src/app/Models/post.dto';
-import { LocalStorageService } from 'src/app/Services/local-storage.service';
 import { PostService } from 'src/app/Services/post.service';
 import { SharedService } from 'src/app/Services/shared.service';
 
@@ -13,20 +14,24 @@ import { SharedService } from 'src/app/Services/shared.service';
 })
 export class PostsListComponent {
   posts!: PostDTO[];
+  userId: string = '';
   constructor(
     private postService: PostService,
     private router: Router,
-    private localStorageService: LocalStorageService,
+    private store: Store<AppState>,
     private sharedService: SharedService
   ) {
-    this.loadPosts();
+
+    this.store.select('authApp').subscribe((auth) => {
+      this.userId = auth.credentials.user_id;
+      this.loadPosts();
+    });
   }
 
   private loadPosts(): void {
     let errorResponse: any;
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {      
-      this.postService.getPostsByUserId(userId).subscribe((resp: PostDTO[]) => {
+    if (this.userId !== '') {      
+      this.postService.getPostsByUserId(this.userId).subscribe((resp: PostDTO[]) => {
         this.posts = resp;
       },
       (error: HttpErrorResponse) => {

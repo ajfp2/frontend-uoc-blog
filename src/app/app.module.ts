@@ -22,7 +22,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
 import { appReducers } from './app.reducer';
 import { EffectsModule } from '@ngrx/effects';
-import { EffectsArray } from './auth/effects';
+import { EffectsArray } from './app.reducer';
 
 @NgModule({
   declarations: [

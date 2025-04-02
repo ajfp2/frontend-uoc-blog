@@ -7,7 +7,9 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { finalize } from 'rxjs/operators';
+import { AppState } from 'src/app/app.reducer';
 import { UserDTO } from 'src/app/Models/user.dto';
 import { LocalStorageService } from 'src/app/Services/local-storage.service';
 import { SharedService } from 'src/app/Services/shared.service';
@@ -31,12 +33,13 @@ export class ProfileComponent implements OnInit {
 
   profileForm: UntypedFormGroup;
   isValidForm: boolean | null;
+  userId: string = '';
 
   constructor(
     private formBuilder: UntypedFormBuilder,
     private userService: UserService,
     private sharedService: SharedService,
-    private localStorageService: LocalStorageService
+    private store: Store<AppState>
   ) {
     this.profileUser = new UserDTO('', '', '', '', new Date(), '', '');
 
@@ -89,15 +92,18 @@ export class ProfileComponent implements OnInit {
       email: this.email,
       password: this.password,
     });
+    this.store.select('authApp').subscribe(resp => {
+      this.userId = resp.credentials.user_id;
+    });
   }
 
   ngOnInit(): void {
     let errorResponse: any;
 
     // load user data
-    const userId = this.localStorageService.get('user_id');
-    if (userId) {
-      this.userService.getUSerById(userId)
+    
+    if (this.userId !== '') {
+      this.userService.getUSerById(this.userId)
       .subscribe((resp: UserDTO) => {
         const userData = resp;
         this.name.setValue(userData.name);
@@ -139,10 +145,8 @@ export class ProfileComponent implements OnInit {
     this.isValidForm = true;
     this.profileUser = this.profileForm.value;
 
-    const userId = this.localStorageService.get('user_id');
-
-    if (userId) {
-      this.userService.updateUser(userId, this.profileUser)
+    if (this.userId !== '') {
+      this.userService.updateUser(this.userId, this.profileUser)
       .pipe(
         finalize(async() => {
           await this.sharedService.managementToast(
