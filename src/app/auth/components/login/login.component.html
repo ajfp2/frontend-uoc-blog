@@ -1,44 +1,37 @@
 <div style="margin-left: auto; margin-right: auto">
   <p id="loginFeedback"></p>
 </div>
-<div>
+<div class="container-uoc">
   <h1>Login</h1>
+
   <form [formGroup]="loginForm" (ngSubmit)="login()">
-    <div>
-      <label for="email">Email: </label>
-      <input type="email" [formControl]="email" />
-    </div>
+    <section>
+      <mat-form-field appearance="fill">
+        <mat-label>Introduzca su email:</mat-label>
+        <input matInput type="email" [formControl]="email" required  placeholder="Ex: user@example.com"/>
 
-    <div>
-      <label for="password">Password: </label>
-      <input type="password" [formControl]="password" />
-    </div>
+        <mat-error *ngIf="email.errors && (email.touched || email.dirty)">
+          <span *ngIf="email.errors.required">Email es requerido</span>
+          <span *ngIf="email.errors.pattern">Email no válido</span>
+        </mat-error>
 
-    <button type="submit" [disabled]="!loginForm.valid">Login</button>
+      </mat-form-field>
+    </section>
+
+    <section>
+      <mat-form-field>
+        <mat-label>Introduzca su contraseña:</mat-label>
+        <input matInput type="password" [formControl]="password" placeholder="Contraseña" />
+        <mat-error *ngIf="password.errors && (password.touched || password.dirty)">
+          <span *ngIf="password.errors.required">Password es requerido</span>
+          <span *ngIf="password.errors.minlength">Password must be greater tha 8 characters</span>
+          <span *ngIf="password.errors.maxlength">Password can be max 16 characters long</span>
+        </mat-error>
+      </mat-form-field>      
+    </section>
+    <section style="text-align: center;">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">Login</button>
+    </section>
+    
   </form>
-</div>
-
-<div *ngIf="email.errors">
-  <span
-    style="color: red"
-    *ngIf="email.errors && (email.touched || email.dirty)"
-  >
-    <span *ngIf="email.errors.required">Email is required</span>
-    <div *ngIf="email.errors.pattern">Email not a valid format.</div>
-  </span>
-</div>
-
-<div *ngIf="password.errors">
-  <span
-    style="color: red"
-    *ngIf="password.errors && (password.touched || password.dirty)"
-  >
-    <span *ngIf="password.errors.required">Password is required</span>
-    <span *ngIf="password.errors.minlength"
-      >Password must be greater tha 8 characters</span
-    >
-    <span *ngIf="password.errors.maxlength"
-      >Password can be max 16 characters long</span
-    >
-  </span>
 </div>

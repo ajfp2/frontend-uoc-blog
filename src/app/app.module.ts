@@ -23,6 +23,7 @@ import { environment } from 'src/environments/environment';
 import { appReducers } from './app.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { EffectsArray } from './app.reducer';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { EffectsArray } from './app.reducer';
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production
-    })
+    }),
+    BrowserAnimationsModule
   ],
   providers: [
     {
