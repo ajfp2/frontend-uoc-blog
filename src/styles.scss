@@ -3,6 +3,12 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+.content{
+    padding: 16px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
 .container-uoc {
     display: flex;
     justify-content: center;

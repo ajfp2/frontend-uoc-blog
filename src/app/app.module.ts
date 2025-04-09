@@ -24,6 +24,9 @@ import { appReducers } from './app.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { EffectsArray } from './app.reducer';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCardModule } from '@angular/material/card';
+import {MatChipsModule} from '@angular/material/chips';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     CategoryFormComponent,
     PostFormComponent,
     FormatDatePipe,
-    DashboardComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +55,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       maxAge: 25,
       logOnly: environment.production
     }),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatChipsModule,
+    MatButtonModule
   ],
   providers: [
     {
