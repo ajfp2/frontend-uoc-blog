@@ -13,11 +13,22 @@ import { AppState } from 'src/app/app.reducer';
 import { AuthDTO } from 'src/app/auth/models/auth.dto';
 
 import { loginAction } from '../../actions/auth.actions';
+import { transition, trigger, state, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      state('void',
+        style({
+          opacity: 0.2,
+        })
+      ),
+      transition('void <=> *', animate(1500)),
+    ]),
+  ]
 })
 export class LoginComponent implements OnInit {
   loginUser: AuthDTO;
