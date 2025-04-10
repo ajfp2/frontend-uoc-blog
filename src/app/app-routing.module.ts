@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CategoriesListComponent } from './Components/categories/categories-list/categories-list.component';
-import { CategoryFormComponent } from './Components/categories/category-form/category-form.component';
-import { DashboardComponent } from './Components/dashboard/dashboard.component';
-import { HomeComponent } from './Components/home/home.component';
-import { LoginComponent } from './auth/components/login/login.component';
-import { PostFormComponent } from './Components/posts/post-form/post-form.component';
-import { PostsListComponent } from './Components/posts/posts-list/posts-list.component';
-import { ProfileComponent } from './Components/profile/profile.component';
-import { RegisterComponent } from './Components/register/register.component';
-import { AuthGuard } from './Guards/auth.guard';
+import { LoginComponent } from './Auth/components/login.component';
+import { CategoriesListComponent } from './Category/components/categories-list/categories-list.component';
+import { CategoryFormComponent } from './Category/components/category-form/category-form.component';
+import { DashboardComponent } from './Post/components/dashboard/dashboard.component';
+import { HomeComponent } from './Post/components/home/home.component';
+import { PostFormComponent } from './Post/components/post-form/post-form.component';
+import { PostsListComponent } from './Post/components/posts-list/posts-list.component';
+import { AuthGuard } from './Shared/Guards/auth.guard';
+import { ProfileComponent } from './User/components/profile/profile.component';
+import { RegisterComponent } from './User/components/register/register.component';
 
 const routes: Routes = [
   {

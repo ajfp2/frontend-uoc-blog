@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthDTO } from '../models/auth.dto';
 import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { SharedService } from 'src/app/Shared/Services/shared.service';
+import { AuthDTO } from '../models/auth.dto';
 
-interface AuthToken {
+export interface AuthToken {
   user_id: string;
   access_token: string;
 }
@@ -15,18 +17,14 @@ export class AuthService {
   private urlBlogUocApi: string;
   private controller: string;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private sharedService: SharedService) {
     this.controller = 'auth';
     this.urlBlogUocApi = 'http://localhost:3000/' + this.controller;
   }
 
   login(auth: AuthDTO): Observable<AuthToken> {
-    console.log("AUTH SERVICE", auth);
-    
-    return this.http.post<AuthToken>(this.urlBlogUocApi, auth);
+    return this.http
+      .post<AuthToken>(this.urlBlogUocApi, auth)
+      .pipe(catchError(this.sharedService.handleError));
   }
-
-  // login(auth: any): Observable<AuthToken> {
-  //   return this.http.post<AuthToken>(this.urlBlogUocApi, auth);
-  // }
 }

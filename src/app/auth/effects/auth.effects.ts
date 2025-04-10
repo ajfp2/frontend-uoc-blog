@@ -1,61 +1,81 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, finalize, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, exhaustMap, finalize, map } from 'rxjs/operators';
+import { SharedService } from 'src/app/Shared/Services/shared.service';
+import * as AuthActions from '../actions';
+import { AuthDTO } from '../models/auth.dto';
 import { AuthService } from '../services/auth.service';
-import { loginAction, loginActionSuccess, loginActionFailure } from '../actions';
-import { SharedService } from 'src/app/Services/shared.service';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthEffects {
+  private responseOK: boolean;
+  private errorResponse: any;
 
-  responseOK = false;
-  errorResponse: any;
-  
-  constructor(private actions$: Actions, private authService: AuthService, private sharedService: SharedService, private router: Router) {}
-
+  constructor(
+    private actions$: Actions,
+    private authService: AuthService,
+    private router: Router,
+    private sharedService: SharedService
+  ) {
+    this.responseOK = false;
+  }
   login$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(loginAction),
-      mergeMap(action =>
-        this.authService.login(action.userForm).pipe(
-          map(response => loginActionSuccess({ user_id: response.user_id, access_token: response.access_token })), 
-          catchError(error => of(loginActionFailure({ payload: error }))),
-          finalize(async () =>{
+      ofType(AuthActions.login),
+      exhaustMap(({ credentials }) =>
+        this.authService.login(credentials).pipe(
+          map((userToken) => {
+            const credentialsTemp: AuthDTO = {
+              email: credentials.email,
+              password: credentials.password,
+              user_id: userToken.user_id,
+              access_token: userToken.access_token,
+            };
+
+            return AuthActions.loginSuccess({ credentials: credentialsTemp });
+          }),
+          catchError((error) => {
+            return of(AuthActions.loginFailure({ payload: error }));
+          }),
+          finalize(async () => {
             await this.sharedService.managementToast(
               'loginFeedback',
               this.responseOK,
-                this.errorResponse
+              this.errorResponse
             );
 
-            if(this.responseOK == true) this.router.navigateByUrl('home');
+            if (this.responseOK) {
+              this.router.navigateByUrl('home');
+            }
           })
         )
       )
     )
   );
 
-  loginSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loginActionSuccess),
-      map(action => {
-        this.responseOK = true;
-      })
-    ),
+  loginSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.loginSuccess),
+        map(() => {
+          this.responseOK = true;
+        })
+      ),
     { dispatch: false }
   );
 
-  loginFailure$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(loginActionFailure),
-      map(action => {
-        this.responseOK = false;
-        this.errorResponse = action.payload.error;
-        this.sharedService.errorLog(this.errorResponse);
-      })
-    ),
+  loginFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(AuthActions.loginFailure),
+        map((error) => {
+          this.responseOK = false;
+          this.errorResponse = error.payload.error;
+          this.sharedService.errorLog(error.payload.error);
+        })
+      ),
     { dispatch: false }
   );
-
 }

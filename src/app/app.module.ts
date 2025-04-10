@@ -2,63 +2,44 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { CategoriesListComponent } from './Components/categories/categories-list/categories-list.component';
-import { CategoryFormComponent } from './Components/categories/category-form/category-form.component';
-import { FooterComponent } from './Components/footer/footer.component';
-import { HeaderComponent } from './Components/header/header.component';
-import { HomeComponent } from './Components/home/home.component';
-import { PostFormComponent } from './Components/posts/post-form/post-form.component';
-import { PostsListComponent } from './Components/posts/posts-list/posts-list.component';
-import { ProfileComponent } from './Components/profile/profile.component';
-import { RegisterComponent } from './Components/register/register.component';
-import { AuthInterceptorService } from './Services/auth-interceptor.service';
-import { FormatDatePipe } from './Pipes/format-date.pipe';
-import { DashboardComponent } from './Components/dashboard/dashboard.component';
-import { AuthModule } from './auth/auth.module';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from 'src/environments/environment';
-import { appReducers } from './app.reducer';
-import { EffectsModule } from '@ngrx/effects';
-import { EffectsArray } from './app.reducer';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatCardModule } from '@angular/material/card';
-import {MatChipsModule} from '@angular/material/chips';
-import { MatButtonModule } from '@angular/material/button';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { appReducers, EffectsArray } from './app.reducers';
+import { AuthModule } from './Auth/auth.module';
+import { CategoryModule } from './Category/category.module';
+import { PostModule } from './Post/post.module';
+import { FooterComponent } from './Shared/Components/footer/footer.component';
+import { HeaderComponent } from './Shared/Components/header/header.component';
+import { AuthInterceptorService } from './Shared/Services/auth-interceptor.service';
+import { UserModule } from './User/user.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    RegisterComponent,
-    HeaderComponent,
-    FooterComponent,
-    HomeComponent,
-    ProfileComponent,
-    PostsListComponent,
-    CategoriesListComponent,
-    CategoryFormComponent,
-    PostFormComponent,
-    FormatDatePipe,
-    DashboardComponent
-  ],
+  declarations: [AppComponent, HeaderComponent, FooterComponent],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     HttpClientModule,
     AuthModule,
-    StoreModule.forRoot( appReducers ),
-    EffectsModule.forRoot( EffectsArray ),
+    UserModule,
+    CategoryModule,
+    PostModule,
+    StoreModule.forRoot(appReducers, {
+      runtimeChecks: {
+        strictStateImmutability: false,
+        strictActionImmutability: false,
+      },
+    }),
+    EffectsModule.forRoot(EffectsArray),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
-      logOnly: environment.production
+      logOnly: environment.production,
     }),
-    BrowserAnimationsModule,
-    MatCardModule,
-    MatChipsModule,
-    MatButtonModule
   ],
   providers: [
     {
