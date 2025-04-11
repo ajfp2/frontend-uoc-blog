@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.container-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 30px;
+}
+
+.container-form mat-form-field + mat-form-field {
+  margin-left: 8px;
+}
+
+.container-form mat-form-field {
+  width: 300px;
+}
+
+.container-form form {
+  margin-bottom: 20px;
+}
+
+.container-form form > * {
+  margin: 12px 0;
+}
