@@ -1,67 +1,38 @@
-<div style="margin-left: auto; margin-right: auto">
+<div style="margin-left: auto; margin-right: auto; padding: 10px;">
   <p id="categoryFeedback"></p>
 </div>
-<div>
-  <h1>Category form</h1>
-  <form
-    *ngIf="categoryForm"
-    [formGroup]="categoryForm"
-    (ngSubmit)="saveCategory()"
-  >
-    <div>
-      <label for="title">Title:</label>
-      <input type="text" [formControl]="title" />
 
-      <div *ngIf="title.errors">
-        <div
-          *ngIf="title.errors && isValidForm != null && !isValidForm"
-          [ngClass]="'error'"
-        >
-          <div *ngIf="title.errors.required">Title is required</div>
+<div class="container-form" [@fadeInOut]>
+  <h1>Formulario Categorias</h1>
+  <form *ngIf="categoryForm" [formGroup]="categoryForm" (ngSubmit)="saveCategory()">
 
-          <div *ngIf="title.errors.maxlength">
-            Title can be max 55 characters long.
-          </div>
-        </div>
-      </div>
-    </div>
+    <section>
+      <mat-form-field appearance="fill">
+        <mat-label for="title">Título:</mat-label>
+        <input matInput type="text" [formControl]="title" />
+        <mat-error *ngIf="title.hasError('required')">El título es obligatorio</mat-error>
+        <mat-error *ngIf="title.hasError('maxlength')">El título debe tener menos de 55 caracteres.</mat-error>
+      </mat-form-field>
+    </section>
 
-    <div>
-      <label for="description">Description:</label>
-      <input type="text" [formControl]="description" />
+    <section>
+      <mat-form-field appearance="fill">
+        <mat-label for="description">Descripción:</mat-label>
+        <input matInput type="text" [formControl]="description" />
+        <mat-error *ngIf="description.hasError('required')">La Descripción es obligatoria</mat-error>
+        <mat-error *ngIf="description.hasError('maxlength')">La Descripción debe tener menos de 255 caracteres.</mat-error>
+      </mat-form-field>
+    </section>
 
-      <div *ngIf="description.errors">
-        <div
-          *ngIf="description.errors && isValidForm != null && !isValidForm"
-          [ngClass]="'error'"
-        >
-          <div *ngIf="description.errors.required">Description is required</div>
+    <section>
+      <mat-form-field appearance="fill">
+        <mat-label for="description">Css color (#):</mat-label>
+        <input matInput type="text" [formControl]="css_color" />
+        <mat-error *ngIf="description.hasError('required')">El color CSS es requerido</mat-error>
+        <mat-error *ngIf="description.hasError('maxlength')">El color no debe tener mas de 7 caracteres (incluido el #).</mat-error>
+      </mat-form-field>
+    </section>
 
-          <div *ngIf="description.errors.maxlength">
-            Description can be max 255 characters long.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <label for="description">Css color:</label>
-      <input type="text" [formControl]="css_color" />
-
-      <div *ngIf="css_color.errors">
-        <div
-          *ngIf="css_color.errors && isValidForm != null && !isValidForm"
-          [ngClass]="'error'"
-        >
-          <div *ngIf="css_color.errors.required">Css color is required</div>
-
-          <div *ngIf="css_color.errors.maxlength">
-            Css color can be max 7 characters long.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <button type="submit">SAVE</button>
+    <button type="submit">Guardar</button>
   </form>
 </div>

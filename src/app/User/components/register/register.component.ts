@@ -10,11 +10,22 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 import * as UserAction from '../../actions';
 import { UserDTO } from '../../models/user.dto';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
+  animations: [
+    trigger('fadeInOut',[
+      state(
+        'void',
+        style({ opacity: 0.2 })
+      ),
+      transition('void <=> *', animate(1500))
+    ]),
+  ]
 })
 export class RegisterComponent implements OnInit {
   registerUser: UserDTO;
@@ -111,4 +122,21 @@ export class RegisterComponent implements OnInit {
 
     this.store.dispatch(UserAction.register({ user }));
   }
+
+  getErrorsMessage(): string {
+    let smsError = '';
+    
+    if(this.password.hasError('required')){
+      smsError = 'El password es obligatorio';
+    } else {
+      if(this.password.hasError('minlength')){
+        smsError = 'El password debe tener al menos 8 caracteres';
+      }
+      if(this.password.hasError('maxlength')){
+        smsError = 'El password debe tener menos de 16 caracteres';
+      }
+    }
+    return smsError;
+  }
+
 }

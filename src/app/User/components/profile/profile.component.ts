@@ -10,10 +10,22 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 import * as UserAction from '../../actions';
 import { UserDTO } from '../../models/user.dto';
+
+import { trigger, state, style, transition, animate } from '@angular/animations';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
+  animations: [
+    trigger('fadeInOut',[
+      state(
+        'void',
+        style({ opacity: 0.2 })
+      ),
+      transition('void <=> *', animate(1500))
+    ]),
+  ]
 })
 export class ProfileComponent implements OnInit {
   profileUser: UserDTO;
@@ -139,5 +151,21 @@ export class ProfileComponent implements OnInit {
         UserAction.updateUser({ userId: this.userId, user: this.profileUser })
       );
     }
+  }
+
+  getErrorsMessage(): string {
+    let smsError = '';
+    
+    if(this.password.hasError('required')){
+      smsError = 'El password es obligatorio';
+    } else {
+      if(this.password.hasError('minlength')){
+        smsError = 'El password debe tener al menos 8 caracteres';
+      }
+      if(this.password.hasError('maxlength')){
+        smsError = 'El password debe tener menos de 16 caracteres';
+      }
+    }
+    return smsError;
   }
 }

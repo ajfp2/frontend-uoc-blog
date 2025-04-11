@@ -13,12 +13,23 @@ import { CategoryDTO } from 'src/app/Category/models/category.dto';
 import * as CategoriesAction from '../../../Category/actions';
 import * as PostsAction from '../../actions';
 import { PostDTO } from '../../models/post.dto';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-post-form',
   templateUrl: './post-form.component.html',
   styleUrls: ['./post-form.component.scss'],
+  animations: [
+    trigger('fadeInOut',[
+      state(
+        'void',
+        style({ opacity: 0.2 })
+      ),
+      transition('void <=> *', animate(1500))
+    ]),
+  ]
 })
+
 export class PostFormComponent implements OnInit {
   post: PostDTO;
   title: FormControl;

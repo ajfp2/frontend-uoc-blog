@@ -10,12 +10,23 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 import * as CategoriesAction from '../../actions';
 import { CategoryDTO } from '../../models/category.dto';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-category-form',
   templateUrl: './category-form.component.html',
   styleUrls: ['./category-form.component.scss'],
+  animations: [
+    trigger('fadeInOut',[
+      state(
+        'void',
+        style({ opacity: 0.2 })
+      ),
+      transition('void <=> *', animate(1500))
+    ]),
+  ]
 })
+
 export class CategoryFormComponent implements OnInit {
   category: CategoryDTO;
   title: FormControl;

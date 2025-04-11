@@ -34,12 +34,12 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private store: Store<AppState>
   ) {
-    this.email = new FormControl('', [
+    this.email = new FormControl('ajfp2@uoc.edu', [
       Validators.required,
       Validators.pattern('[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$'),
     ]);
 
-    this.password = new FormControl('', [
+    this.password = new FormControl('ajfp21234', [
       Validators.required,
       Validators.minLength(8),
       Validators.maxLength(16),
