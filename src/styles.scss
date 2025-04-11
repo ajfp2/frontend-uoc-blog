@@ -1,7 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
+@use "sass:color";
+
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  
+$font-family-serif: "Georgia", "Times New Roman", serif;
+$blanco: #fff;
+$uoc-corporate: #000078;
+// $uoc-masterbrand: #73edff;
+$uoc-masterbrand: #c9c9c9;
+$uoc-header: #343434;
+$menu-hover: #97999B;
+$text-hover: #2284ee;
+//#CFF3F0 verde azulon
+
+$uoc-bg: color.scale($uoc-masterbrand, $lightness: 70%);
+$maxWidth: 1200px;
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+body {
+  font-family: $font-family-serif;
+  font-size: 16px;
+  line-height: 24px;
+  background-color: $uoc-bg;
+  color: $uoc-corporate;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: $maxWidth; 
+  margin: 0 auto;
+  padding: 0 15px;
+}
 
 .container-uoc {
   display: flex;

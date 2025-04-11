@@ -12,6 +12,7 @@ import { MatTableModule } from '@angular/material/table';
 // Componentes 
 import { CategoriesListComponent } from './components/categories-list/categories-list.component';
 import { CategoryFormComponent } from './components/category-form/category-form.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CategoryFormComponent } from './components/category-form/category-form.
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatTableModule
+    MatTableModule,
+    MatIconModule
   ],
 })
 export class CategoryModule {}

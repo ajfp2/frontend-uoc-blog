@@ -12,11 +12,13 @@ import { CategoryDTO } from '../../models/category.dto';
 })
 export class CategoriesListComponent {
   categories: CategoryDTO[];
+  catTableColums: string[] = ["categoryId", "title", "description", "css_color", "actions"];
 
   private userId: string;
   constructor(private router: Router, private store: Store<AppState>) {
     this.userId = '';
     this.categories = new Array<CategoryDTO>();
+    
 
     this.store.select('auth').subscribe((auth) => {
       if (auth.credentials.user_id) {

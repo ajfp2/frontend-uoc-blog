@@ -1,7 +1,9 @@
 
-<h2>Post List</h2>
-<div class="container-uoc">
-  <button mat-raised-button (click)="createPost()" style="float: right;"> Nuevo Post</button>
+
+<div class="container">
+  <h2>Post List</h2>
+
+  <button mat-raised-button (click)="createPost()" style="float: right; margin-bottom: 15px;"> Nuevo Post</button>
 
   <table mat-table [dataSource]="posts" class="mat-elevation-z8" *ngIf="posts.length > 0">
 
@@ -46,32 +48,5 @@
   
     <tr mat-header-row *matHeaderRowDef="postTableColums"></tr>
     <tr mat-row *matRowDef="let row; columns: postTableColums;"></tr>
-  </table>
-
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>TITLE</th>
-        <th>DESCRIPTION</th>
-        <th>NUM LIKES</th>
-        <th>NUM DISLIKES</th>
-        <th>ACTIONS</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let post of posts">
-        <td>{{ post.postId }}</td>
-        <td>{{ post.title }}</td>
-        <td>{{ post.description }}</td>
-        <td>{{ post.num_likes }}</td>
-        <td>{{ post.num_dislikes }}</td>
-
-        <td>
-          <button (click)="updatePost(post.postId)">UPDATE</button>
-          <button (click)="deletePost(post.postId)">DELETE</button>
-        </td>
-      </tr>
-    </tbody>
   </table>
 </div>
