@@ -1,29 +1,77 @@
+
 <h2>Post List</h2>
-<button (click)="createPost()">ADD</button>
+<div class="container-uoc">
+  <button mat-raised-button (click)="createPost()" style="float: right;"> Nuevo Post</button>
 
-<table>
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>TITLE</th>
-      <th>DESCRIPTION</th>
-      <th>NUM LIKES</th>
-      <th>NUM DISLIKES</th>
-      <th>ACTIONS</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let post of posts">
-      <td>{{ post.postId }}</td>
-      <td>{{ post.title }}</td>
-      <td>{{ post.description }}</td>
-      <td>{{ post.num_likes }}</td>
-      <td>{{ post.num_dislikes }}</td>
+  <table mat-table [dataSource]="posts" class="mat-elevation-z8" *ngIf="posts.length > 0">
 
-      <td>
-        <button (click)="updatePost(post.postId)">UPDATE</button>
-        <button (click)="deletePost(post.postId)">DELETE</button>
+    <ng-container matColumnDef="postId">
+      <th mat-header-cell *matHeaderCellDef> Id. </th>
+      <td mat-cell *matCellDef="let element"> {{ element.postId }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef> Title. </th>
+      <td mat-cell *matCellDef="let element"> {{ element.title }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> Desc. </th>
+      <td mat-cell *matCellDef="let element"> {{ element.description }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="num_likes">
+      <th mat-header-cell *matHeaderCellDef> Likes </th>
+      <td mat-cell *matCellDef="let element"> {{ element.num_likes }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="num_dislikes">
+      <th mat-header-cell *matHeaderCellDef> Dislikes. </th>
+      <td mat-cell *matCellDef="let element"> {{ element.num_dislikes }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let element">
+
+        <button mat-icon-button color="primary" (click)="updatePost(element.postId)">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deletePost(element.postId)">
+          <mat-icon>delete</mat-icon>
+        </button>
       </td>
-    </tr>
-  </tbody>
-</table>
+    </ng-container>
+  
+  
+    <tr mat-header-row *matHeaderRowDef="postTableColums"></tr>
+    <tr mat-row *matRowDef="let row; columns: postTableColums;"></tr>
+  </table>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>TITLE</th>
+        <th>DESCRIPTION</th>
+        <th>NUM LIKES</th>
+        <th>NUM DISLIKES</th>
+        <th>ACTIONS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let post of posts">
+        <td>{{ post.postId }}</td>
+        <td>{{ post.title }}</td>
+        <td>{{ post.description }}</td>
+        <td>{{ post.num_likes }}</td>
+        <td>{{ post.num_dislikes }}</td>
+
+        <td>
+          <button (click)="updatePost(post.postId)">UPDATE</button>
+          <button (click)="deletePost(post.postId)">DELETE</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

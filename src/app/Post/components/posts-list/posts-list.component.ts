@@ -12,6 +12,7 @@ import { PostDTO } from '../../models/post.dto';
 })
 export class PostsListComponent {
   posts: PostDTO[];
+  postTableColums: string[] =["postId", "title", "description", "num_likes", "num_dislikes", "actions"];
   private userId: string;
 
   constructor(private router: Router, private store: Store<AppState>) {

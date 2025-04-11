@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatTableModule } from '@angular/material/table';
 
 // Componentes 
 import { CategoriesListComponent } from './components/categories-list/categories-list.component';
@@ -22,7 +23,8 @@ import { CategoryFormComponent } from './components/category-form/category-form.
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTableModule
   ],
 })
 export class CategoryModule {}
