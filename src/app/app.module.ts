@@ -17,9 +17,12 @@ import { HeaderComponent } from './Shared/Components/header/header.component';
 import { AuthInterceptorService } from './Shared/Services/auth-interceptor.service';
 import { UserModule } from './User/user.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+import { SpinnerComponent } from './Shared/Components/spinner/spinner.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, FooterComponent],
+  declarations: [AppComponent, HeaderComponent, FooterComponent, SpinnerComponent],
 
   imports: [
     BrowserModule,
@@ -42,6 +45,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       logOnly: environment.production,
     }),
     BrowserAnimationsModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     {
