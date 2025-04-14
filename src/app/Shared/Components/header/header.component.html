@@ -1,19 +1,69 @@
-<p>header works!</p>
+<mat-toolbar color="primary" class="mat-elevation-z4">
+  <button mat-icon-button class="example-icon" title="Menú App">
+    <mat-icon>rate_review</mat-icon>
+  </button>
+  <span>UOC BLOG</span>
 
-<!-- NO AUTH REQUIRED -->
-<div *ngIf="showNoAuthSection">
-  <button (click)="dashboard()">Dashboard</button>
-  <button (click)="home()">Home</button>
-  <button (click)="login()">Login</button>
-  <button (click)="register()">Register</button>
-</div>
+  <button mat-button (click)="dashboard()" title="Dashboard" style="margin-left: 25px;">
+    <mat-icon>dashboard</mat-icon>
+    <span>Dashboard</span>
+  </button>
+  <button mat-button (click)="home()" title="Home">
+    <mat-icon>home</mat-icon>
+    <span>Home</span>
+  </button>
 
-<!-- AUTH REQUIRED -->
-<div *ngIf="showAuthSection">
-  <button (click)="dashboard()">Dashboard</button>
-  <button (click)="home()">Home</button>
-  <button (click)="adminPosts()">Admin posts</button>
-  <button (click)="adminCategories()">Admin categories</button>
-  <button (click)="profile()">Profile</button>
-  <button (click)="logout()">Logout</button>
-</div>
+  <div *ngIf="showAuthSection">
+    <button mat-button (click)="adminPosts()">
+      <mat-icon>article_person</mat-icon>
+      <span>Post</span>
+    </button>
+    <button mat-button (click)="adminCategories()">
+      <mat-icon>category</mat-icon>
+      <span>Cagegorias</span>
+    </button>
+  </div>
+
+
+  <span class="example-spacer"></span>
+
+  <!-- NO AUTH REQUIRED -->
+  <div *ngIf="showNoAuthSection">
+    <!-- <span class="example-spacer"></span> -->
+    <button mat-button (click)="login()">
+      <mat-icon>login</mat-icon>
+      <span>Login</span>
+    </button>
+    
+    <button mat-button (click)="register()">
+      <mat-icon>person_add</mat-icon>
+      <span>Registrarse</span>
+    </button>
+  </div>
+
+  <!-- AUTH REQUIRED -->
+  <div *ngIf="showAuthSection">
+
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="example-icon">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>settings</mat-icon>
+        <span>Config</span>
+      </button>
+      <button mat-menu-item (click)="profile()">
+        <mat-icon>person</mat-icon>
+        <span>Mi cuenta</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Salir</span>
+      </button>
+    </mat-menu>
+  </div>
+
+
+</mat-toolbar>

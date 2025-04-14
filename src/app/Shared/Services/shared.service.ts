@@ -28,7 +28,7 @@ export class SharedService {
       if (validRequest) {
         toastMsg.className = 'show requestOk';
         toastMsg.textContent = 'Form submitted successfully.';
-        await this.wait(2500);
+        await this.wait(1500);
         toastMsg.className = toastMsg.className.replace('show', '');
       } else {
         toastMsg.className = 'show requestKo';
@@ -48,7 +48,7 @@ export class SharedService {
             error?.statusCode;
         }
 
-        await this.wait(2500);
+        await this.wait(1500);
         toastMsg.className = toastMsg.className.replace('show', '');
       }
     }
