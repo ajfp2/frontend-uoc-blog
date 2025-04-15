@@ -1,6 +1,6 @@
 <div class="container">
   <h1>Categories List</h1>
-  <button mat-raised-button (click)="createCategory()" style="float: right; margin-bottom: 15px;">Nueva Categoria</button>
+  <button mat-raised-button color="primary" (click)="createCategory()" style="float: right; margin-bottom: 15px;">Nueva Categoria</button>
   
   <table mat-table [dataSource]="categories" class="mat-elevation-z8" *ngIf="categories.length > 0">
 

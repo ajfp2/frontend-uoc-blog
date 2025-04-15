@@ -3,43 +3,45 @@
   <mat-card class="card" *ngFor="let post of posts; let i = index;">
     <img mat-card-image src='https://picsum.photos/200/300?random={{ i }}' alt="Photo of a Shiba Inu">
     <mat-card-header>
-      <mat-card-title>{{ post.title }</mat-card-title>
-      <mat-card-subtitle><mat-icon>rate_review</mat-icon>{{ post.userAlias }}</mat-card-subtitle>      
+      <mat-card-title>{{ post.title }}</mat-card-title>
+      <mat-card-subtitle><small>Publicado por: </small>{{ post.userAlias }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content style="margin: 5px 0;">
-      <mat-chip-listbox aria-label="Categorias Posts">
-        <mat-chip *ngFor="let category of post.categories" [ngStyle]="{ 'background-color': category.css_color }">{{ category.title }}</mat-chip>      
-      </mat-chip-listbox>
-
       <p>{{ post.description }}</p>
 
-      <mat-card-subtitle style="float: right;">
-        <mat-icon>calendar_month</mat-icon>
-        <span>{{ post.publication_date | formatDate: 3 }}</span>
+      <mat-chip-listbox aria-label="Categorias Posts">
+        <mat-chip *ngFor="let category of post.categories" [ngStyle]="{ 'background-color': category.css_color + '!important' }">
+          {{ category.title }}
+        </mat-chip>      
+      </mat-chip-listbox>
+      <mat-card-subtitle style="margin-top: 5px;">
+        <mat-icon style="vertical-align: bottom;">calendar_month</mat-icon>
+        <span >{{ post.publication_date | formatDate: 3 }}</span>        
       </mat-card-subtitle>
+
     </mat-card-content>
 
     <mat-card-actions align="end">
       <div *ngIf="!showButtons">
-        <button mat-button>
-          <mat-icon>thumb_up</mat-icon>
+        <p>
+          <mat-icon style="vertical-align: bottom;">thumb_up</mat-icon>
           LIKES ({{ post.num_likes }})
-        </button>
-        <button mat-button>
-          <mat-icon>thumb_down</mat-icon>
+          &nbsp;
+          <mat-icon style="vertical-align: bottom;">thumb_down</mat-icon>
           DISLIKES ({{ post.num_dislikes }})
-        </button>
+        </p>
       </div>
       
-      <div *ngIf="showButtons">
-        <button mat-button (click)="like(post.postId)">
-          <mat-icon>thumb_up</mat-icon>
-          Like
+      <div *ngIf="showButtons" >
+        <button mat-flat-button color="primary" (click)="like(post.postId)">
+          <mat-icon >thumb_up</mat-icon>
+          Like ({{ post.num_likes }})
         </button>
-        <button mat-button (click)="dislike(post.postId)">
+        &nbsp;
+        <button mat-flat-button color="primary" (click)="dislike(post.postId)">
           <mat-icon>thumb_down</mat-icon>
-          Dislike
+          Dislike ({{ post.num_dislikes }})
         </button>
       </div>
 

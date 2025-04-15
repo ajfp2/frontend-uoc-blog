@@ -31,6 +31,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    //npm install ng2-charts@4.1.1 chart.js@3.9.1
     this.loadPosts();
   }
 

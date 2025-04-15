@@ -1,9 +1,9 @@
 
 
-<div class="container-uoc">
+<div class="container">
   <h2>Post List</h2>
 
-  <button mat-raised-button (click)="createPost()" style="float: right; margin-bottom: 15px;"> Nuevo Post</button>
+  <button mat-raised-button (click)="createPost()" color="primary" style="float: right; margin-bottom: 15px;"> Nuevo Post</button>
 
   <table mat-table [dataSource]="posts" class="mat-elevation-z8" *ngIf="posts.length > 0">
 
