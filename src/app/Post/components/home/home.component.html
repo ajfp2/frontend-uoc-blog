@@ -1,7 +1,7 @@
+<h2 style="text-align: center;">Interceptor.ts delay en 500ms para mostrar spinner</h2>
 <div class="container gird-cards">
-  
   <mat-card class="card" *ngFor="let post of posts; let i = index;">
-    <img mat-card-image src='https://picsum.photos/200/300?random={{ i }}' alt="Photo of a Shiba Inu">
+    <img class="card-image" mat-card-image src='https://picsum.photos/200/300?random={{ i }}' alt="Photo of a Shiba Inu">
     <mat-card-header>
       <mat-card-title>{{ post.title }}</mat-card-title>
       <mat-card-subtitle><small>Publicado por: </small>{{ post.userAlias }}</mat-card-subtitle>

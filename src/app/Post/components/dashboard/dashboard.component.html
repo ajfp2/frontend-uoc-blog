@@ -1,4 +1,30 @@
-<div *ngIf="posts" class="container">
-  <p>Num likes: {{ numLikes }}</p>
-  <p>Num dislikes: {{ numDislikes }}</p>
+<div *ngIf="posts" class="container gird-cards">
+  <!-- <p>Num likes: {{ numLikes }}</p>
+  <p>Num dislikes: {{ numDislikes }}</p> -->
+
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title style="text-align: center;">Todos los posts</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <canvas baseChart
+      [data]="pieChartData"
+      [type]="pieChartType"
+      [options]="pieChartOptions"
+    >
+    </canvas>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title style="text-align: center;">Por posts</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <canvas baseChart
+        [data]="barChartData"
+        [type]="'bar'">
+      </canvas>
+    </mat-card-content>
+  </mat-card>
 </div>

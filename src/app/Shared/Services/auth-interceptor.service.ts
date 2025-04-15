@@ -9,12 +9,14 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from '../../app.reducers';
 
+import { delay } from 'rxjs/operators';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthInterceptorService implements HttpInterceptor {
   private access_token: string = '';
-
+  private delayMS = 500;
   constructor(private store: Store<AppState>) {
     this.store.select('auth').subscribe((auth) => {
       this.access_token = '';
@@ -37,7 +39,7 @@ export class AuthInterceptorService implements HttpInterceptor {
         },
       });
     }
-
-    return next.handle(req);
+    //return next.handle(req);
+    return next.handle(req).pipe(delay(this.delayMS));
   }
 }

@@ -1,25 +1,4 @@
-<mat-spinner class="spinner-background"></mat-spinner>
-<!--
-Hola Alex,
+<div class="container spinner-background" *ngIf="showSpinner">
+    <mat-spinner class="spinner-position"></mat-spinner>
+</div>
 
-Aprovecho un mensaje que compartí con otro compañero vía correo donde comentábamos esto mismo:
-
-Podríamos plantear el caso del spinner de varias maneras.
-Podríamos decir que no tiene mucho sentido implementar el mismo código de control de un spinner en cada componente.
-Para un caso general como este, tendría más sentido hacer algo más "transversal" y por lo tanto, más reusable.
-Podríamos plantear la solución des del interceptor, o se podría hacer un servicio transversal, ... tenemos varias opciones.
-
-Por ejemplo, que podríamos hacer?
-
-
-1) Hacer un componente spinner y lo ponemos dentro de shared.
-2) En la vista, el componente spinner muestra el spinner a toda la pantalla inhabilitando la pantalla y en el typescript lo que haría es consultar de todos
-los estados que valor tienen las propiedades loading y loaded. En función del valor se muestra o no el spinner.
-3) Y luego este componente spinner se llamaría directamente en el html del app.component.
-
-Por poner un ejemplo. Opciones tenemos varias.
-
-¿Cómo veis esta propuesta?
-
-Un saludo!
--->
