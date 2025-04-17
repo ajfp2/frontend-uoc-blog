@@ -3,76 +3,90 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducers';
 import * as PostsAction from '../../actions';
 import { PostDTO } from '../../models/post.dto';
-
-//charts
-import {  ChartConfiguration, ChartData, ChartOptions, ChartType } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
-
+import { ChartData, ChartType } from 'chart.js';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
+
 export class DashboardComponent implements OnInit {
-  // Pie
-  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
-  public pieChartData: ChartData<'pie', number[], string | string[]> = {
-    labels: ['Dislikes', 'Likes'],
-    datasets: [
-      {
-        data: [2, 1],
-      },
-    ],
-  };
-  public pieChartType: ChartType = 'pie';
-  public pieChartOptions: ChartOptions = {
-    responsive: true,
-  };
-
-  //Bars
-  public barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: [ '2006', '2007', '2008', '2009', '2010', '2011', '2012' ],
-    datasets: [
-      { data: [ 65, 59, 80, 81, 56, 55, 40 ], label: 'Dislikes' },
-      { data: [ 28, 48, 40, 19, 86, 27, 90 ], label: 'Likes' }
-    ]
-  };
-
 
   // post
   posts: PostDTO[];
   numLikes: number;
   numDislikes: number;
+  arrayLikes: Array<number> = [];
+  arrayDislikes: Array<number> = [];
+
+  dataPie: ChartData<'pie'> = {
+    datasets: []
+  }
+
+  barType: ChartType = 'bar';
+  dataBar: ChartData<'bar'> = {
+    labels: [],
+    datasets: []
+  }
 
   constructor(private store: Store<AppState>) {
     this.posts = new Array<PostDTO>();
     this.numLikes = 0;
     this.numDislikes = 0;
-
+    this.dataBar.labels = [];
+    this.arrayDislikes = [];
+    this.arrayLikes = []
     this.store.select('posts').subscribe((posts) => {
       this.posts = posts.posts;
       this.numLikes = 0;
       this.numDislikes = 0;
+
       this.posts.forEach((post) => {
         this.numLikes = this.numLikes + post.num_likes;
         this.numDislikes = this.numDislikes + post.num_dislikes;
+        
+        console.log("title", post.title);
+        
+        this.dataBar.labels?.push(post.title);
+        console.log("label",this.dataBar.labels);
+        this.arrayDislikes.push(post.num_dislikes);
+        this.arrayLikes.push(post.num_likes);       
       });
-    });
-    // this.datasets = [ this.numDislikes, this.numLikes];
 
+      console.log("Fin foreach");
+      
+      // en suscribe
+      this.cargarDatos();
+    });
   }
 
   ngOnInit(): void {
     this.loadPosts();
-    this.updateCharts();
+    
+    
   }
 
-  private updateCharts() {
-    this.pieChartData.datasets[0].data.push(this.numDislikes);
-    this.pieChartData.datasets[1].data.push(this.numLikes);
-
-    this.chart?.update();
+  private cargarDatos(){
+    this.dataPie = {
+      labels: ['DisLikes', 'Likes'],
+      datasets: [
+        {
+          label: 'Todos',
+          data: [this.numDislikes, this.numLikes]
+        }
+      ]
+    };
+    this.dataBar.datasets = [
+      {
+        label: 'Dislikes',
+        data: this.arrayDislikes
+      },
+      {
+        label: 'Likes',
+        data: this.arrayLikes
+      }
+    ];
   }
 
   private loadPosts(): void {

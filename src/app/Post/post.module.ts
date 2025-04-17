@@ -21,6 +21,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 // Pipes
 import { FormatDatePipe } from '../Shared/Pipes/format-date.pipe';
+import { GraficasComponent } from './components/graficas/graficas.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { FormatDatePipe } from '../Shared/Pipes/format-date.pipe';
     HomeComponent,
     FormatDatePipe,
     DashboardComponent,
+    GraficasComponent
   ],
   imports: [
     CommonModule,
@@ -43,6 +45,6 @@ import { FormatDatePipe } from '../Shared/Pipes/format-date.pipe';
     MatCardModule,
     MatChipsModule,
     NgChartsModule
-  ],
+],
 })
 export class PostModule {}

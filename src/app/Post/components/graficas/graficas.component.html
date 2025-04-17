@@ -1,0 +1,18 @@
+      <!-- <canvas  id="idChartPie" >{{ pieChart }}</canvas> -->
+
+
+
+<mat-card class="card">
+    <mat-card-header>
+      <mat-card-title style="text-align: center;">{{ title }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <canvas class="canvas" baseChart [type]="chartType" [data]="data" [options]="options"></canvas>
+    </mat-card-content>
+  </mat-card>
+
+
+<!-- <canvas baseChart
+[data]="barChartData"
+[type]="'bar'">
+</canvas> -->
