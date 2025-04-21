@@ -13,17 +13,13 @@ export class GraficasComponent {
   @Input() title: string = 'Sin titulo';
 
   @Input('chartType') chartType: ChartType = 'pie';
+  
   @Input('chartOptions') options: ChartOptions = {
     responsive: true,
   };
 
   @Input('charData') data: ChartData = {
     labels: [],
-    datasets: [
-      {
-        label: '',
-        data: []
-      }
-    ]
+    datasets: []
   };
 }
