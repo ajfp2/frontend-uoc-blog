@@ -36,25 +36,22 @@ export class DashboardComponent implements OnInit {
     this.numDislikes = 0;
     this.dataBar.labels = [];
     this.arrayDislikes = [];
-    this.arrayLikes = []
+    this.arrayLikes = [];
     this.store.select('posts').subscribe((posts) => {
       this.posts = posts.posts;
       this.numLikes = 0;
       this.numDislikes = 0;
-
+      this.arrayDislikes = [];
+      this.arrayLikes = [];
+      this.dataBar.labels = [];
       this.posts.forEach((post) => {
         this.numLikes = this.numLikes + post.num_likes;
         this.numDislikes = this.numDislikes + post.num_dislikes;
         
-        console.log("title", post.title);
-        
         this.dataBar.labels?.push(post.title);
-        console.log("label",this.dataBar.labels);
         this.arrayDislikes.push(post.num_dislikes);
         this.arrayLikes.push(post.num_likes);       
       });
-
-      console.log("Fin foreach");
       
       // en suscribe
       this.cargarDatos();
@@ -87,6 +84,7 @@ export class DashboardComponent implements OnInit {
         data: this.arrayLikes
       }
     ];
+    
   }
 
   private loadPosts(): void {

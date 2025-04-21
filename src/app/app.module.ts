@@ -14,23 +14,16 @@ import { CategoryModule } from './Category/category.module';
 import { PostModule } from './Post/post.module';
 import { AuthInterceptorService } from './Shared/Services/auth-interceptor.service';
 import { UserModule } from './User/user.module';
+import { SharedModule } from './Shared/shared.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 // Componentes
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './Shared/Components/header/header.component';
-import { SpinnerComponent } from './Shared/Components/spinner/spinner.component';
 
-// Angular Material
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
 
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, SpinnerComponent],
+  declarations: [AppComponent],
 
   imports: [
     BrowserModule,
@@ -41,6 +34,7 @@ import { MatDividerModule } from '@angular/material/divider';
     UserModule,
     CategoryModule,
     PostModule,
+    SharedModule,
     StoreModule.forRoot(appReducers, {
       runtimeChecks: {
         strictStateImmutability: false,
@@ -52,13 +46,7 @@ import { MatDividerModule } from '@angular/material/divider';
       maxAge: 25,
       logOnly: environment.production,
     }),
-    BrowserAnimationsModule,
-    MatProgressSpinnerModule,
-    MatToolbarModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    MatDividerModule
+    BrowserAnimationsModule
   ],
   providers: [
     {

@@ -1,50 +1,15 @@
-<h2 style="text-align: center;">Interceptor.ts delay en 500ms para mostrar spinner</h2>
-<div class="container gird-cards">
-  <mat-card class="card" *ngFor="let post of posts; let i = index;">
-    <img class="card-image" mat-card-image src='https://picsum.photos/200/300?random={{ i }}' alt="Photo of a Shiba Inu">
-    <mat-card-header>
-      <mat-card-title>{{ post.title }}</mat-card-title>
-      <mat-card-subtitle><small>Publicado por: </small>{{ post.userAlias }}</mat-card-subtitle>
-    </mat-card-header>
 
-    <mat-card-content style="margin: 5px 0;">
-      <p>{{ post.description }}</p>
-
-      <mat-chip-listbox aria-label="Categorias Posts">
-        <mat-chip *ngFor="let category of post.categories" [ngStyle]="{ 'background-color': category.css_color + '!important' }">
-          {{ category.title }}
-        </mat-chip>      
-      </mat-chip-listbox>
-      <mat-card-subtitle style="margin-top: 5px;">
-        <mat-icon style="vertical-align: bottom;">calendar_month</mat-icon>
-        <span >{{ post.publication_date | formatDate: 3 }}</span>        
-      </mat-card-subtitle>
-
-    </mat-card-content>
-
-    <mat-card-actions align="end">
-      <div *ngIf="!showButtons">
-        <p>
-          <mat-icon style="vertical-align: bottom;">thumb_up</mat-icon>
-          LIKES ({{ post.num_likes }})
-          &nbsp;
-          <mat-icon style="vertical-align: bottom;">thumb_down</mat-icon>
-          DISLIKES ({{ post.num_dislikes }})
-        </p>
-      </div>
-      
-      <div *ngIf="showButtons" >
-        <button mat-flat-button color="primary" (click)="like(post.postId)">
-          <mat-icon >thumb_up</mat-icon>
-          Like ({{ post.num_likes }})
-        </button>
-        &nbsp;
-        <button mat-flat-button color="primary" (click)="dislike(post.postId)">
-          <mat-icon>thumb_down</mat-icon>
-          Dislike ({{ post.num_dislikes }})
-        </button>
-      </div>
-
-    </mat-card-actions>
-  </mat-card>
+<div class="container">
+  <h2 style="text-align: center;">Interceptor.ts delay en 500ms para mostrar spinner</h2><br />
+  <div class="grid" [@cardAnimations]>
+    <div *ngFor="let post of posts; let i = index;">
+      <app-card
+        [item]="post"
+        [img]="i"
+        [showButtons]="showButtons"
+        (like)="like(post.postId)"
+        (dislike)="dislike(post.postId)"
+      ></app-card>
+    </div>
+  </div>
 </div>

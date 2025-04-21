@@ -20,8 +20,9 @@ import { PostsListComponent } from './components/posts-list/posts-list.component
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 // Pipes
-import { FormatDatePipe } from '../Shared/Pipes/format-date.pipe';
+// import { FormatDatePipe } from '../Shared/Pipes/format-date.pipe';
 import { GraficasComponent } from './components/graficas/graficas.component';
+import { SharedModule } from '../Shared/shared.module';
 
 
 @NgModule({
@@ -29,12 +30,13 @@ import { GraficasComponent } from './components/graficas/graficas.component';
     PostsListComponent,
     PostFormComponent,
     HomeComponent,
-    FormatDatePipe,
+    // FormatDatePipe,
     DashboardComponent,
     GraficasComponent
   ],
   imports: [
     CommonModule,
+    SharedModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,

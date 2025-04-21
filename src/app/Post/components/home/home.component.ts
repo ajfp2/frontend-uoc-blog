@@ -6,15 +6,24 @@ import { SharedService } from 'src/app/Shared/Services/shared.service';
 import * as PostsAction from '../../actions';
 import { PostDTO } from '../../models/post.dto';
 import { PostService } from '../../services/post.service';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  animations: [
+    trigger('cardAnimations', [
+      transition('* => *', [
+        style({ opacity: 0, transform: 'translateX(-100%)' }),
+        animate('1000ms ease-out', style({ opacity: 1, transform: 'translateX(0)' }))
+      ])
+    ])
+  ]
 })
 export class HomeComponent {
   posts: PostDTO[];
-  showButtons: boolean;
+  showButtons: boolean = false;
 
   private userId: string;
 

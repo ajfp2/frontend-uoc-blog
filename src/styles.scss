@@ -8,7 +8,7 @@ $font-family-serif: "Georgia", "Times New Roman", serif;
 $blanco: #fff;
 $uoc-corporate: #000078;
 // $uoc-masterbrand: #73edff;
-$uoc-masterbrand: #c9c9c9;
+$uoc-masterbrand: #b9babb;
 $uoc-header: #343434;
 $menu-hover: #97999B;
 $text-hover: #2284ee;
@@ -17,7 +17,7 @@ $text-hover: #2284ee;
 $uoc-bg: color.scale($uoc-masterbrand, $lightness: 70%);
 $maxWidth: 1400px;
 
-html, body { height: 100%; }
+html, body { width: 100%; height: 100%; }
 
 
 body {
@@ -31,7 +31,7 @@ body {
 }
 
 .container {
-  max-width: $maxWidth; 
+  // max-width: $maxWidth; 
   margin: 0 auto;
   margin-top: 15px;
   padding: 0 15px;

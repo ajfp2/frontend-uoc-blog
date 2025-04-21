@@ -1,0 +1,50 @@
+<mat-card class="card" [@hoverState]="hover ? 'hovered' : 'default'" (mouseenter)="hover = true" (mouseleave)="hover = false">
+    <img class="card-image" mat-card-image src='https://picsum.photos/200/300?random={{ img }}' alt="Photo of a Shiba Inu">
+    <mat-card-header>
+      <mat-card-title>{{ item.title }}</mat-card-title>
+      <mat-card-subtitle><small>Publicado por: </small>{{ item.userAlias }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content style="margin: 5px 0;">
+      <p>{{ item.description }}</p>
+      <!--  -->
+      <button class="btn-categorias" *ngFor="let category of item.categories" mat-raised-button [style.background-color]="category.css_color">
+        {{ category.title }}
+      </button>
+      <!-- <mat-chip-listbox aria-label="Categorias Posts">
+        <mat-chip-option *ngFor="let category of item.categories" [style.background-color]="{'background-color': 'black !important'}">
+          {{ category.title }}
+        </mat-chip-option>      
+      </mat-chip-listbox> -->
+      <mat-card-subtitle style="margin-top: 5px;" class="item-date">
+        <mat-icon style="vertical-align: bottom;">calendar_month</mat-icon>
+        <span >{{ item.publication_date | formatDate: 3 }}</span>        
+      </mat-card-subtitle>
+
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <div *ngIf="!showButtons">
+        <p>
+          <mat-icon style="vertical-align: bottom;">thumb_up</mat-icon>
+          LIKES ({{ item.num_likes }})
+          &nbsp;
+          <mat-icon style="vertical-align: bottom;">thumb_down</mat-icon>
+          DISLIKES ({{ item.num_dislikes }})
+        </p>
+      </div>
+      
+      <div *ngIf="showButtons" >
+        <button mat-flat-button color="primary" (click)="like_click(item.postId)">
+          <mat-icon >thumb_up</mat-icon>
+          Like ({{ item.num_likes }})
+        </button>
+        &nbsp;
+        <button mat-flat-button color="primary" (click)="dislike_click(item.postId)">
+          <mat-icon>thumb_down</mat-icon>
+          Dislike ({{ item.num_dislikes }})
+        </button>
+      </div>
+
+    </mat-card-actions>
+</mat-card>
